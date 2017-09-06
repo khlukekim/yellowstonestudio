@@ -10,10 +10,8 @@ var sketch = function( p5 ) {
     p5.image(bgImage, 0, 0, p5.displayWidth, p5.displayHeight);
   }
   p5.mousePressed = function() {
-    if (p5.mouseX > 0 && p5.mouseX < 100 && p5.mouseY > 0 && p5.mouseY < 100) {
-      var fs = p5.fullscreen();
-      p5.fullscreen(!fs);
-    }
+    var fs = p5.fullscreen();
+    p5.fullscreen(!fs);
   }
 };
 
