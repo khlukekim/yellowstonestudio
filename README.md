@@ -2,4 +2,4 @@
 
 Visualization demo
 
-[sketch1](sketch1/)
+[sketch](sketch/)
