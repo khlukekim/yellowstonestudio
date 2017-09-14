@@ -58,7 +58,7 @@ var sketch = function( p5 ) {
       initMode(3);
     }else if(p5.key == '4') {
       initMode(4);
-    }else if(p5.key == '4') {
+    }else if(p5.key == '5') {
       initMode(5);
     }
   };
