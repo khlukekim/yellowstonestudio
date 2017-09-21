@@ -1,68 +1,74 @@
-var sketch = function( p5 ) {
+var sketch = function( p ) {
   var bgImage;
   var ballImage;
   var r;
   var rings;
-  var currentMode = 4;
+  var currentMode = 1;
 
   var dartboard;
   var drawer = null;
 
+  var mic;
+
   function initMode(mode) {
     currentMode = mode;
     if (currentMode == 1) {
-      drawer = new DartBoard(p5, 10, 0.2 * p5.height);
+      drawer = new DartBoard(p, 10, 0.2 * p.height);
     } else if (currentMode == 2) {
-      drawer = new Zap(p5);
+      drawer = new Zap(p);
     }else if (currentMode == 3) {
-      drawer = new Rossette(p5);
+      drawer = new Rossette(p);
     }else if (currentMode == 4) {
-      drawer = new Crack(p5);
+      drawer = new Crack(p);
     }else if (currentMode == 5) {
-      drawer = new Spark(p5);
+      drawer = new Spark(p);
     }
   }
 
-  p5.preload = function() {
-    bgImage = p5.loadImage("bg.jpg");
-    ballImage = p5.loadImage("star.jpg");
+  p.preload = function() {
+    bgImage = p.loadImage("bg.jpg");
+    ballImage = p.loadImage("star.jpg");
   };
 
-  p5.setup = function() {
-    p5.colorMode(p5.HSB, 1);
-    p5.createCanvas(p5.displayWidth, p5.displayHeight);
-    p5.smooth();
-    initMode(5);
+  p.setup = function() {
+    mic = new p5.AudioIn();
+    mic.start();
+    p.colorMode(p.HSB, 1);
+    p.createCanvas(p.displayWidth, p.displayHeight);
+    p.smooth();
+    initMode(currentMode);
   };
 
-  p5.mousePressed = function() {
+  p.mousePressed = function() {
     drawer.mousePressed();
   };
 
-  p5.draw = function() {
-    p5.image(bgImage, 0, 0, p5.width, p5.height);
+  p.draw = function() {
+    p.image(bgImage, 0, 0, p.width, p.height);
+    var micLevel = mic.getLevel();
+    //console.log(micLevel);
     if(drawer){
-      drawer.draw();
+      drawer.draw(micLevel);
     }
   };
 
-  p5.keyPressed = function(){
-    if(p5.key == ' ') {
-      var fs = p5.fullscreen();
-      p5.fullscreen(!fs);
-    }else if(p5.key == '1') {
+  p.keyPressed = function(){
+    if(p.key == ' ') {
+      var fs = p.fullscreen();
+      p.fullscreen(!fs);
+    }else if(p.key == '1') {
       initMode(1);
-    }else if(p5.key == '2') {
+    }else if(p.key == '2') {
       initMode(2);
-    }else if(p5.key == '3') {
+    }else if(p.key == '3') {
       initMode(3);
-    }else if(p5.key == '4') {
+    }else if(p.key == '4') {
       initMode(4);
-    }else if(p5.key == '5') {
+    }else if(p.key == '5') {
       initMode(5);
     }
   };
 
 };
 
-var myp5 = new p5(sketch);
+var myp = new p5(sketch);

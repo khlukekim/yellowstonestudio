@@ -45,15 +45,15 @@ Ring.prototype.init = function() {
   this.remapTexture();
 };
 
-Ring.prototype.calculateControlPoints = function(){
+Ring.prototype.calculateControlPoints = function(mod){
   var angle = this.angleOffset;
   for (var i = 0; i<this.noPies; i++) {
-    var r = this.innerR * this.innerRMod;
+    var r = this.innerR * this.innerRMod * mod;
     this.innerPoints[i].set(r*this.p5.cos(angle), r*this.p5.sin(angle));
     if(this.useOuterNoise) {
-      r = (0.9 + this.p5.pow(1000, this.outerRMod - 1) * 0.1) * this.outerR * this.outerRMod;
+      r = mod * (0.9 + this.p5.pow(1000, this.outerRMod - 1) * 0.1) * this.outerR * this.outerRMod;
     } else {
-      r = this.outerR * this.outerRMod;
+      r = mod * this.outerR * this.outerRMod;
     }
     this.outerPoints[i].set(r*this.p5.cos(angle), r*this.p5.sin(angle));
     angle += this.anglePerPie;
@@ -69,14 +69,14 @@ Ring.prototype.remapTexture = function(){
   }
 };
 
-Ring.prototype.update = function() {
+Ring.prototype.update = function(mic) {
   //fade();
   this.angleOffset += this.angularSpeed;
   //remapTexture();
-  this.calculateControlPoints();
+  this.calculateControlPoints(1 + this.p5.sqrt(mic));
 };
 
-Ring.prototype.draw = function() {
+Ring.prototype.draw = function(mic) {
   this.p5.push();
   if (this.drawSeparate) {
     this.p5.noStroke();
