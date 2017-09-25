@@ -6,7 +6,7 @@ function DartBoard(p5, nRings, r) {
   this.ringColorOffset = 0;
   this.c1 = this.p5.color('#203070');
   this.c2 = this.p5.color('#dde050');
-  this.micThreshold = 0.1;
+  this.micThreshold = 0.4;
   this.sinceActivated = 10;
   this.init();
 }
@@ -34,13 +34,13 @@ DartBoard.prototype.init = function() {
 
 DartBoard.prototype.draw = function (mic) {
   var activated = false;
-  if (mic > this.micThreshold && this.sinceActivated >=10) {
+  /*if (mic > this.micThreshold && this.sinceActivated >=10) {
     activated = true;
     this.sinceActivated = 0;
     this.moveColor();
   }else {
     this.sinceActivated += 1;
-  }
+  }*/
   for (var i = 0; i<this.rings.length; i++) {
     this.rings[i].update(mic);
     this.rings[i].draw(mic);

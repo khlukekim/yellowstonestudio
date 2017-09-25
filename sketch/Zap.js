@@ -4,7 +4,6 @@ function Zap(p5) {
   this.maxCrystals = 8;
   this.maxRingRad = 0;
   this.p5 = p5;
-
   this.init();
 }
 
@@ -44,10 +43,18 @@ Zap.prototype.draw = function() {
 }
 
 Zap.prototype.zaps = function() {
+
+  var stop = 0;
   for(var i = 0; i < this.crystals.length; i++) {
+    if(stop > 3) {
+      break;
+    }
     for(var j = 0; j<this.crystals.length; j++) {
       if(i == j) {
         continue;
+      }
+      if(stop > 3) {
+        break;
       }
       var c1 = this.crystals[i];
       var c2 = this.crystals[j];
@@ -56,10 +63,26 @@ Zap.prototype.zaps = function() {
         (this.p5.abs(c1.loc.x - c2.loc.x) < th && this.p5.abs(c1.loc.y - c2.loc.y) < th)
         || (c1.bursting && this.p5.abs(c1.loc.x - c2.loc.x) < c1.ringRad && this.p5.abs(c1.loc.y - c2.loc.y) < c1.ringRad)
         ) {
-        this.doZap(c1, c2);
+
+        if (c1.sinceLastZap > 10 && c2.sinceLastZap > 10) {
+          this.doZap(c1, c2);
+          this.doZap(c1, c2);
+          this.doZap(c1, c2);
+          c1.zapped = true;
+          c2.zapped = true;
+          stop += 1;
+        }
       }
 
     }
+    this.crystals[i].sinceLastZap += 1;
+  }
+
+  for(var i = 0; i < this.crystals.length; i++) {
+    if (this.crystals[i].zapped) {
+      this.crystals[i].sinceLastZap = 0;
+    }
+    this.crystals[i].zapped = false;
   }
 };
 
@@ -109,6 +132,8 @@ function Crystal(p5, x, y) {
   this.ringRad = this.rad;
   var b = this.p5.max(0, (1 - this.p5.pow((this.power/this.maxPower-1), 2)));
   this.col = this.p5.color(this.p5.max(0, 1 - this.power/this.maxPower), 0.7, b);
+  this.sinceLastZap = 0;
+  this.zapped = false;
 }
 
 Crystal.prototype.move = function() {

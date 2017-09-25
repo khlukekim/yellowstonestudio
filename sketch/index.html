@@ -9,9 +9,30 @@
     <script src="Rossette.js"></script>
     <script src="Crack.js"></script>
     <script src="Spark.js"></script>
+    <script src="Particle.js"></script>
     <script src="sketch.js"></script>
-    <style> body {padding: 0; margin: 0;overflow: hidden;} </style>
+    <style>
+    body {
+      padding: 0; margin: 0;overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+    }
+
+    .bg {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+    }
+    </style>
   </head>
   <body>
+    <div id='container' class='container'>
+      <img src='bg.jpg' id='bg' class='bg'>
+    </div>
   </body>
 </html>

@@ -21,7 +21,8 @@ var sketch = function( p ) {
     }else if (currentMode == 4) {
       drawer = new Crack(p);
     }else if (currentMode == 5) {
-      drawer = new Spark(p);
+      p.clear();
+      drawer = new Particles(p);
     }
   }
 
@@ -34,9 +35,13 @@ var sketch = function( p ) {
     mic = new p5.AudioIn();
     mic.start();
     p.colorMode(p.HSB, 1);
-    p.createCanvas(p.displayWidth, p.displayHeight);
+    var canvas = p.createCanvas(p.displayWidth, p.displayHeight);
+    canvas.parent('container');
     p.smooth();
     initMode(currentMode);
+    var b = document.getElementById('bg');
+    b.style.width = p.displayWidth;
+    b.style.height = p.displayHeight;
   };
 
   p.mousePressed = function() {
@@ -44,7 +49,11 @@ var sketch = function( p ) {
   };
 
   p.draw = function() {
-    p.image(bgImage, 0, 0, p.width, p.height);
+    //console.log(p.frameRate());
+    //p.image(bgImage, 0, 0, p.width, p.height);
+    if (currentMode != 5) {
+      p.clear();
+    }
     var micLevel = mic.getLevel();
     //console.log(micLevel);
     if(drawer){
@@ -54,17 +63,24 @@ var sketch = function( p ) {
 
   p.keyPressed = function(){
     if(p.key == ' ') {
-      var fs = p.fullscreen();
+      var elem = document.getElementById("container");
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
       p.fullscreen(!fs);
-    }else if(p.key == '1') {
+    }else if(p.key == '1' || p.key == 'q' || p.key == 'Q') {
       initMode(1);
-    }else if(p.key == '2') {
+    }else if(p.key == '2' || p.key == 'w' || p.key == 'W') {
       initMode(2);
-    }else if(p.key == '3') {
+    }else if(p.key == '3' || p.key == 'e' || p.key == 'E') {
       initMode(3);
-    }else if(p.key == '4') {
+    }else if(p.key == '4' || p.key == 'r' || p.key == 'R') {
       initMode(4);
-    }else if(p.key == '5') {
+    }else if(p.key == '5' || p.key == 't' || p.key == 'T') {
       initMode(5);
     }
   };

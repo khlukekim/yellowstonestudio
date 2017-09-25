@@ -73,7 +73,7 @@ Ring.prototype.update = function(mic) {
   //fade();
   this.angleOffset += this.angularSpeed;
   //remapTexture();
-  this.calculateControlPoints(1 + this.p5.sqrt(mic));
+  this.calculateControlPoints(1 + this.p5.sqrt(mic)/2);
 };
 
 Ring.prototype.draw = function(mic) {

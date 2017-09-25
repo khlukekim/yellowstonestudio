@@ -9,12 +9,12 @@ function Crack(p5){
 }
 
 
-Crack.prototype.draw = function(){
+Crack.prototype.draw = function(m){
   var pa = this.p5;
   pa.push();
   pa.noFill();
   this.begin(50*pa.abs(pa.cos(this.k)) +100, 50*pa.abs(pa.sin(this.k)) +100, 12);
-  this.k = this.k + pa.PI/128;
+  this.k = this.k + (pa.PI/200) * (1 + 3*m);
   pa.pop();
 };
 
