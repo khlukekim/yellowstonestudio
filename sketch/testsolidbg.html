@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+ <html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+  <script type="text/javascript">
+    var bound = false;
+
+    window.onload = function() {
+      var container = document.getElementById('container');
+      //container.style.width = screen.width + 'px';
+      //container.style.height = screen.height + 'px';
+    }
+
+    function bindJavascript() {
+      var pjs = Processing.getInstanceById("sketch");
+      if (pjs != null && pjs.bindJavaScript) {
+        pjs.bindJavaScript(this);
+        bound = true;
+      }
+      if(!bound) setTimeout(bindJavascript, 250);
+    }
+
+    bindJavascript();
+
+    function fullScreen() {
+      launchIntoFullscreen(document.getElementById("sketch"));
+    }
+
+    function launchIntoFullscreen(element) {
+      if(element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if(element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    }
+    document.onfullscreenchange = function(event) {
+      scaleCanvas(document.fullscreen);
+    };
+    document.onwebkitfullscreenchange = function(event) {
+      scaleCanvas(document.webkitIsFullScreen);
+    };
+
+    function scaleCanvas(fs) {
+      var canvas = document.getElementById('sketch');
+      if (fs) {
+        var scaleH = screen.height / canvas.height;
+        var scaleW = screen.width / canvas.width;
+        var scale = Math.min(scaleH, scaleW);
+        document.getElementById('sketch').style.transform = 'scale(' + scale + ')';
+      } else {
+        document.getElementById('sketch').style.transform = '';
+      }
+    }
+
+    var context = new AudioContext();
+    function accessMic() {
+      navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(function(stream) {
+          var mic = context.createMediaStreamSource(steam);
+          var filter = context.createBiquadFilter();
+          filter.type = 'lowpass';
+          mic.connect(filter);
+
+        }).catch(function(err) {
+          alert("It looks like your browser doesn't support Microphone Input. Please use Chrome browser.");
+        });
+      }
+
+  </script>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+    .container {
+      position:relative;
+    }
+    .bg {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id='container' class='container'>
+  <!--img class='bg' src="single_cover_website2.jpg"-->
+  <canvas id= "sketch" data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
+Disco.pde   Particle.pde    Wave.pde
+Drawable.pde    Point.pde   Zap.pde
+Dream.pde   Ring.pde    ringssolidbg.pde
+Lightening.pde    Rossette.pde"></canvas>
+  </div>
+</body>
+</html>
