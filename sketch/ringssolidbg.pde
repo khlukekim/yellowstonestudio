@@ -169,8 +169,16 @@ void processBeat() {
 void draw(){
   //processBeat();
 
+  if(frameCount % 3 == 0) {
+
+  fill(0, 0.07);
+  tint(1, 0.07);
+  image(img, 0,0, width, height);
+} else {
+
   fill(0.8, 0.5, 0.1, 0.07);
   rect(0, 0, width, height);
+}
 
   if (currentMode == 7 ) {
     drawRevRings();
