@@ -168,11 +168,12 @@ void processBeat() {
 
 void draw(){
   //processBeat();
-  fill(0, 0.07);
-  tint(1, 0.07);
-  image(img, 0,0, width, height);
-  noTint();
+  //fill(0, 0.07);
+  //tint(1, 0.07);
+  //image(img, 0,0, width, height);
+  //noTint();
   //rect(0,0,width, height);
+  background(0, 0);
 
   if (currentMode == 7 ) {
     drawRevRings();
