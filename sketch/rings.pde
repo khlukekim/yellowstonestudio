@@ -72,7 +72,7 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
-  size(500, 500, P2D);
+  size(960, 540, P2D);
   //fullScreen(P2D);
 
   particleSpeed = min(width, height) / 1000;
@@ -504,8 +504,9 @@ void updateHandPosition(PVector leftHand, PVector rightHand, PVector leftShoulde
 }
 
 void keyPressed(){
-
-  if(key==49){
+  if (key == 32) {
+    javascript.fullScreen();
+  }else if(key==49){
     changeMode(3);
   }else if(key==50){
     changeMode(10);
@@ -774,3 +775,16 @@ void clearObjects() {
     lightening = null;
     disco = null;
 }
+
+
+////// javascript functions
+
+interface JavaScript {
+  void fullScreen();
+}
+
+void bindJavaScript(JavaScript js) {
+  javascript = js;
+}
+
+JavaScript javascript;

@@ -2,9 +2,58 @@
  <html>
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+  <script type="text/javascript">
+    var bound = false;
+
+    function bindJavascript() {
+      var pjs = Processing.getInstanceById("sketch");
+      if (pjs != null && pjs.bindJavaScript) {
+        pjs.bindJavaScript(this);
+        bound = true;
+      }
+      if(!bound) setTimeout(bindJavascript, 250);
+    }
+
+    bindJavascript();
+
+    function fullScreen() {
+      launchIntoFullscreen(document.getElementById("sketch"));
+    }
+
+    function launchIntoFullscreen(element) {
+      if(element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if(element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    }
+    document.onfullscreenchange = function(event) {
+      scaleCanvas(document.fullscreen);
+    };
+    document.onwebkitfullscreenchange = function(event) {
+      scaleCanvas(document.webkitIsFullScreen);
+    };
+
+    function scaleCanvas(fs) {
+      var canvas = document.getElementById('sketch');
+      if (fs) {
+        var scaleH = screen.height / canvas.height;
+        var scaleW = screen.width / canvas.width;
+        var scale = Math.min(scaleH, scaleW);
+        document.getElementById('sketch').style.transform = 'scale(' + scale + ')';
+      } else {
+        document.getElementById('sketch').style.transform = '';
+      }
+    }
+
+  </script>
 </head>
 <body>
-  <canvas data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
+  <canvas id= "sketch" data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
 Disco.pde   Particle.pde    Wave.pde
 Drawable.pde    Point.pde   Zap.pde
 Dream.pde   Ring.pde    rings.pde
