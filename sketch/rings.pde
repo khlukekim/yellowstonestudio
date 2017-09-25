@@ -72,7 +72,7 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
-  size(1280, 960, P2D);
+  size(screen.width, screen.height, P2D);
   //fullScreen(P2D);
 
   particleSpeed = min(width, height) / 1000;
@@ -172,7 +172,7 @@ void draw(){
   tint(1, 0.07);
   image(img, 0,0, width, height);
   noTint();
-  rect(0,0,width, height);
+  //rect(0,0,width, height);
 
   if (currentMode == 7 ) {
     drawRevRings();
@@ -442,7 +442,6 @@ void updateHandPosition(PVector leftHand, PVector rightHand, PVector leftShoulde
   }
 
   lastTorsoX = torso.x;
-
   lastTorsoY = torso.y;
 
   float ax = (torso.x - leftHand.x);
