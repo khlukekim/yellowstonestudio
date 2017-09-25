@@ -81,10 +81,10 @@ void setup(){
   }
 
   img = loadImage("single_cover_website2.jpg");
-  ballImage = loadImage("star.jpg");
+  //ballImage = loadImage("star.jpg");
 
-  ballImageR = ballImage.width / 2;
-  screenBallRatio = min(width, height) / 2 / ballImageR * 0.8;
+  //ballImageR = ballImage.width / 2;
+  //screenBallRatio = min(width, height) / 2 / ballImageR * 0.8;
 
   imageWidth = img.width;
   imageHeight = img.height;
