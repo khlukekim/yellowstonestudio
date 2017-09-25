@@ -72,7 +72,7 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
-  size(1280, 960, P2D);
+  size(960, 540, P2D);
   //fullScreen(P2D);
 
   particleSpeed = min(width, height) / 1000;
