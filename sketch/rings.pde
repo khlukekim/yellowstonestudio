@@ -348,10 +348,10 @@ void drawARing(Ring ring){
       }
       j = 0;
     }
-    vertex(ring.x+ring.outerPoints[i].x, ring.y+ring.outerPoints[i].y, ballImage.width/2+ring.outerPoints[i].originX/screenBallRatio, ballImage.height/2+ring.outerPoints[i].originY/screenBallRatio);
-    vertex(ring.x+ring.outerPoints[j].x, ring.y+ring.outerPoints[j].y, ballImage.width/2+ring.outerPoints[j].originX/screenBallRatio, ballImage.height/2+ring.outerPoints[j].originY/screenBallRatio);
-    vertex(ring.x+ring.innerPoints[j].x, ring.y+ring.innerPoints[j].y, ballImage.width/2+ring.innerPoints[j].originX/screenBallRatio, ballImage.height/2+ring.innerPoints[j].originY/screenBallRatio);
-    vertex(ring.x+ring.innerPoints[i].x, ring.y+ring.innerPoints[i].y, ballImage.width/2+ring.innerPoints[i].originX/screenBallRatio, ballImage.height/2+ring.innerPoints[i].originY/screenBallRatio);
+    vertex(ring.x+ring.outerPoints[i].x, ring.y+ring.outerPoints[i].y);//, ballImage.width/2+ring.outerPoints[i].originX/screenBallRatio, ballImage.height/2+ring.outerPoints[i].originY/screenBallRatio);
+    vertex(ring.x+ring.outerPoints[j].x, ring.y+ring.outerPoints[j].y);//, ballImage.width/2+ring.outerPoints[j].originX/screenBallRatio, ballImage.height/2+ring.outerPoints[j].originY/screenBallRatio);
+    vertex(ring.x+ring.innerPoints[j].x, ring.y+ring.innerPoints[j].y);//, ballImage.width/2+ring.innerPoints[j].originX/screenBallRatio, ballImage.height/2+ring.innerPoints[j].originY/screenBallRatio);
+    vertex(ring.x+ring.innerPoints[i].x, ring.y+ring.innerPoints[i].y);//, ballImage.width/2+ring.innerPoints[i].originX/screenBallRatio, ballImage.height/2+ring.innerPoints[i].originY/screenBallRatio);
     endShape();
   }
 }
