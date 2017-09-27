@@ -9,7 +9,7 @@
       var container = document.getElementById('container');
       container.style.width = screen.width + 'px';
       container.style.height = screen.height + 'px';
-    }
+    };
 
     function bindJavascript() {
       var pjs = Processing.getInstanceById("sketch");
@@ -85,12 +85,15 @@
       height: 100%;
       z-index: -1;
     }
+    .sketch {
+      mix-blend-mode: lighten;
+    }
   </style>
 </head>
 <body>
   <div id='container' class='container'>
   <img class='bg' src="single_cover_website2.jpg">
-  <canvas id= "sketch" data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
+  <canvas id= "sketch" class="sketch" data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
 Disco.pde   Particle.pde    Wave.pde
 Drawable.pde    Point.pde   Zap.pde
 Dream.pde   Ring.pde    ringsdetachedbg.pde

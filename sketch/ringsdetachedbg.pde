@@ -168,12 +168,9 @@ void processBeat() {
 
 void draw(){
   //processBeat();
-  //fill(0, 0.07);
-  //tint(1, 0.07);
-  //image(img, 0,0, width, height);
-  //noTint();
-  //rect(0,0,width, height);
-  background(0, 0);
+  fill(0, 0.07);
+  rect(0,0,width, height);
+
 
   if (currentMode == 7 ) {
     drawRevRings();
@@ -654,9 +651,9 @@ void drawRevRings() {
 
 void changeMode(int newMode) {
 
-  //fill(0, 0.07);
-  //tint(1, 0.07);
-  //image(img, 0,0, width, height);
+
+  fill(0, 1);
+  rect(0,0,width, height);
   currentMode = newMode;
   if(newMode==1){
     drawParticles = false;
