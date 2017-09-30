@@ -15,6 +15,7 @@
       var pjs = Processing.getInstanceById("sketch");
       if (pjs != null && pjs.bindJavaScript) {
         pjs.bindJavaScript(this);
+        document.getElementById("sketch").focus();
         bound = true;
       }
       if(!bound) setTimeout(bindJavascript, 250);
@@ -93,6 +94,7 @@
   <canvas id= "sketch" data-processing-sources="Crack.pde    OlympicRings.pde  Spark.pde
 Disco.pde   Particle.pde    Wave.pde
 Drawable.pde    Point.pde   Zap.pde
+Dream.pde   Ring.pde    web/rings.pde
 Lightening.pde    Rossette.pde"></canvas>
   </div>
 </body>
