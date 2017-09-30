@@ -33,6 +33,8 @@ PVector com2d = new PVector();
 //AudioInput song;
 //BeatDetect beat;
 
+AudioManager audioManager;
+
 //background image
 PImage img;
 //ball image
@@ -72,6 +74,8 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
+  audioManager = new AudioManager();
+  audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);
   //fullScreen(P2D);
 
@@ -167,6 +171,8 @@ void processBeat() {
 }
 
 void draw(){
+  drawFPS();
+  println(audioManager.getLevel());
   //processBeat();
   fill(0, 0.07);
   tint(1, 0.07);
@@ -784,10 +790,11 @@ void clearObjects() {
 
 interface JavaScript {
   void fullScreen();
+  float getMeter();
 }
 
 void bindJavaScript(JavaScript js) {
   javascript = js;
 }
 
-JavaScript javascript;
+public JavaScript javascript;

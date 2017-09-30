@@ -1,11 +1,17 @@
 class AudioManager {
 
-  public void init(boolean useSong, boolean useMic, boolean useBeat) {    //does nothing
+  PApplet pa;
 
+  public void init(boolean useSong, boolean useMic, boolean useBeat, PApplet pa) {    //does nothing
+    this.pa = pa;
   }
 
   public void getLevel(int bandFrom, int bandTo) {
-    return 0;
+    if (javascript) {
+      return javascript.getMeter();
+    } else {
+      return 0;
+    }
   }
 
   public void getSpecSize() {

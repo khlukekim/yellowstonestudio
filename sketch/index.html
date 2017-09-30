@@ -2,6 +2,7 @@
  <html>
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+  <script src="volume-meter.js"></script>
   <script type="text/javascript">
     var bound = false;
 
@@ -9,6 +10,7 @@
       var container = document.getElementById('container');
       container.style.width = screen.width + 'px';
       container.style.height = screen.height + 'px';
+      accessMic();
     }
 
     function bindJavascript() {
@@ -58,17 +60,25 @@
     }
 
     var context = new AudioContext();
+    var meter = null;
     function accessMic() {
       navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(function(stream) {
-          var mic = context.createMediaStreamSource(steam);
+          var mic = context.createMediaStreamSource(stream);
           var filter = context.createBiquadFilter();
           filter.type = 'lowpass';
           mic.connect(filter);
-
+          meter = createAudioMeter(context);
+          filter.connect(meter);
         }).catch(function(err) {
+          console.log(err);
           alert("It looks like your browser doesn't support Microphone Input. Please use Chrome browser.");
         });
-      }
+    }
+
+    function getMeter() {
+      console.log(meter.volume);
+      return meter.volume;
+    }
 
   </script>
   <style type="text/css">
@@ -95,7 +105,7 @@
 Disco.pde   Particle.pde    Wave.pde
 Drawable.pde    Point.pde   Zap.pde
 Dream.pde   Ring.pde    web/rings.pde
-Lightening.pde    Rossette.pde"></canvas>
+Lightening.pde    Rossette.pde web/AudioManager.pde"></canvas>
   </div>
 </body>
 </html>
