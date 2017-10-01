@@ -175,8 +175,7 @@ void draw(){
   println(audioManager.getLevel());
   //processBeat();
   fill(0, 0.07);
-  tint(1, 0.07);
-  image(img, 0,0, width, height);
+  rect(0,0,width, height);
 
   //background(0, 0);
 
@@ -660,7 +659,6 @@ void drawRevRings() {
 void changeMode(int newMode) {
   fill(1, 1);
   tint(1, 1);
-  image(img, 0,0, width, height);
 
   currentMode = newMode;
   if(newMode==1){
