@@ -69,7 +69,7 @@
           filter.type = 'lowpass';
           mic.connect(filter);
           analyser = context.createAnalyser();
-          filter.connect(analyser);
+          mic.connect(analyser);
         }).catch(function(err) {
           console.log(err);
           alert("It looks like your browser doesn't support Microphone Input. Please use Chrome browser.");

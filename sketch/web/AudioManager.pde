@@ -8,7 +8,7 @@ class AudioManager {
 
   public void getLevel(int bandFrom, int bandTo) {
     if (javascript) {
-      return javascript.getMeter()*30;
+      return javascript.getMeter()*10;
     } else {
       return 0;
     }
