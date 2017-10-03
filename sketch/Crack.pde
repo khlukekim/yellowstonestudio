@@ -9,12 +9,12 @@ class Crack{
     this.pa = pa;
   }
 
-  public void draw(){
+  public void draw(float level){
     pa.pushStyle();
     pa.pushMatrix();
     pa.noFill();
     begin(50*abs(cos(k)) +100, 50*abs(sin(k)) +100, 12);
-    k = k + PI/128;
+    k = k + (0.2 + level / 2) * PI/128;
     pa.popStyle();
     pa.popMatrix();
   }

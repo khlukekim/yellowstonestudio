@@ -196,7 +196,7 @@ void draw(){
   } else if (currentMode == 11) {
     drawRossette(level);
   }else if (currentMode == 12) {
-    drawCrack();
+    drawCrack(level);
   } else if (currentMode == 13) {
     drawSpark();
   } else if (currentMode == 14) {
@@ -627,8 +627,8 @@ void initCrack() {
   crack.init(this);
 }
 
-void drawCrack() {
-  crack.draw();
+void drawCrack(float level) {
+  crack.draw(level);
 }
 
 Spark spark;
