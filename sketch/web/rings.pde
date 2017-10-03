@@ -192,7 +192,7 @@ void draw(){
     }
     drawDisco();
   } else if (currentMode == 10) {
-    drawZap();
+    drawZap(level);
   } else if (currentMode == 11) {
     drawRossette();
   }else if (currentMode == 12) {
@@ -607,8 +607,8 @@ void initZap() {
   zap.init(this);
 }
 
-void drawZap() {
-  zap.draw();
+void drawZap(float level) {
+  zap.draw(level);
 }
 
 Rossette rossette;

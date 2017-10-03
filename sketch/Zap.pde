@@ -2,26 +2,27 @@ public class Zap {
 
   ArrayList<Crystal> crystals;
   float maxPower = 100;
-  int maxCrystals = 8;
+  int maxCrystals = 10;
   float maxRingRad;
   PApplet pa;
-
+  float accumulatedPower = 0;
 
   public void init(PApplet pa) {
     this.pa = pa;
     crystals = new ArrayList<Crystal>();
     maxRingRad = min(height,width) * 0.2;
     crystals.add(new Crystal(width/2 , height/2));
-    for(int i = 0; i < maxCrystals; i++)
+    for(int i = 0; i < 10; i++)
       crystals.add(new Crystal(width/2 + width/5 * random(-1,1), height/2 - height/5 * random(-1,1)));
   }
 
-  public void draw() {
-
+  public void draw(float level) {
+    accumulatedPower += level;
 
     zaps();
 
     ArrayList<Crystal> trash = new ArrayList<Crystal>();
+
     for (Crystal c : crystals) {
       c.move();
       c.draw();
@@ -31,6 +32,13 @@ public class Zap {
 
     for (Crystal c : trash)
       crystals.remove(c);
+
+    if (accumulatedPower > 40) {
+      accumulatedPower -= 40;
+      if (crystals.size() > 0) {
+        crystals.remove(crystals.get(0));
+      }
+    }
 
     while (crystals.size() < maxCrystals) {
       crystals.add(new Crystal(width/2 + width/5 * random(-1,1), height/2 - height/5 * random(-1,1)));
