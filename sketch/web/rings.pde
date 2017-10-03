@@ -74,6 +74,7 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
+  frameRate(30);
   audioManager = new AudioManager();
   audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);
