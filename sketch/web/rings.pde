@@ -194,7 +194,7 @@ void draw(){
   } else if (currentMode == 10) {
     drawZap(level);
   } else if (currentMode == 11) {
-    drawRossette();
+    drawRossette(level);
   }else if (currentMode == 12) {
     drawCrack();
   } else if (currentMode == 13) {
@@ -617,8 +617,8 @@ void initRossette() {
   rossette.init(this);
 }
 
-void drawRossette() {
-  rossette.draw();
+void drawRossette(float level) {
+  rossette.draw(level);
 }
 
 Crack crack;

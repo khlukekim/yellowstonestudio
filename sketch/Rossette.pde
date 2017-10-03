@@ -12,7 +12,7 @@ class Rossette {
     makeColors();
   }
 
-  public void draw() {
+  public void draw(float level) {
     noStroke();
     rectMode(CORNERS);
     colorMode(HSB,360,100,100,255);
@@ -32,7 +32,7 @@ class Rossette {
       ang+=TWO_PI/250.0;
     }
 
-    ang2+=TWO_PI/300;
+    ang2+=(0.1 + level/2) * TWO_PI/300;
     ang=0.0;
 
     colorMode(HSB,1,1,1,1);
