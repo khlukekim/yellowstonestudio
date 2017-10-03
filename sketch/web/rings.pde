@@ -171,8 +171,10 @@ void processBeat() {
 }
 
 void draw(){
-  drawFPS();
-  println(audioManager.getLevel());
+  if (showDebugInfoOnScreen) {
+    drawFPS();
+    println(audioManager.getLevel());
+  }
   //processBeat();
   fill(0, 0.07);
   rect(0,0,width, height);
@@ -236,7 +238,7 @@ void draw(){
   }
 
 
-  if(showDebugInfoOnScreen) {
+  if(false) {
     drawKinect();
   }
 }
@@ -551,6 +553,8 @@ void keyPressed(){
     }
   }else if (key == 'a') {
     changeMode(5);
+  }else if(key==112) {
+    showDebugInfoOnScreen = !showDebugInfoOnScreen;
   }
 }
 
