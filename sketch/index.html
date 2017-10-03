@@ -61,14 +61,15 @@
 
     var context = new AudioContext();
     var meter = null;
+    var analyser;
     function accessMic() {
       navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(function(stream) {
           var mic = context.createMediaStreamSource(stream);
           var filter = context.createBiquadFilter();
           filter.type = 'lowpass';
           mic.connect(filter);
-          meter = createAudioMeter(context);
-          filter.connect(meter);
+          analyser = context.createAnalyser();
+          filter.connect(analyser);
         }).catch(function(err) {
           console.log(err);
           alert("It looks like your browser doesn't support Microphone Input. Please use Chrome browser.");
@@ -76,7 +77,12 @@
     }
 
     function getMeter() {
-      return meter.volume;
+      var dataArray = new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(dataArray);
+      var ssum = dataArray.reduce(function(pv, cv) {
+        return pv + (cv-128) * (cv-128);
+      }, 0);
+      return Math.log(1 + Math.sqrt(ssum / analyser.fftSize)/128);
     }
 
   </script>

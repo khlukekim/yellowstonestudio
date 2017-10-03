@@ -72,7 +72,7 @@ function createAudioMeter(audioContext,clipLevel,averaging,clipLag) {
 
 function volumeAudioProcess( event ) {
   var buf = event.inputBuffer.getChannelData(0);
-    var bufLength = buf.length;
+  var bufLength = buf.length;
   var sum = 0;
     var x;
 

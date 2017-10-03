@@ -171,9 +171,9 @@ void processBeat() {
 }
 
 void draw(){
+  float level = audioManager.getLevel();
   if (showDebugInfoOnScreen) {
     drawFPS();
-    println(audioManager.getLevel());
   }
   //processBeat();
   fill(0, 0.07);
@@ -212,10 +212,9 @@ void draw(){
     setColor(c1, c2, rings);
   }
   for(int i = 0; i<noRings; i++){
-   float level = 0;
-    for(int j = 0; j<bandsPerRing; j++){
+    /*for(int j = 0; j<bandsPerRing; j++){
       level+=fft.getBand(i*bandsPerRing+j);
-    }
+    }*/
 
     if(useBeat){
       mod = onAnyBeat?5:1;
@@ -223,6 +222,8 @@ void draw(){
       mod = 10*(log(level)-2);
     }
     mod=mod<0?0:mod*ringSizeModifier;
+
+    mod = 1 + level;
     rings[i].modifyOuterR(mod);
     rings[i].modifyInnerR(mod);
     rings[i].update();
@@ -545,7 +546,6 @@ void keyPressed(){
   }else if(key=='s'){
     smallerPulse(1);
   }else if(key=='z'){
-
     particleRadius = 160;
     for(int i = 0; i<particleNum; i++){
       particles[i].setSpeed(0.3);
