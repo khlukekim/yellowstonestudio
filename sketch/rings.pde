@@ -1,21 +1,9 @@
 
-/*
-import SimpleOpenNI.*;
-
-import ddf.minim.spi.*;
-import ddf.minim.signals.*;
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.ugens.*;
-import ddf.minim.effects.*;
-*/
-
 
 /* @pjs preload="star.jpg" */
 
 boolean showDebugInfoOnScreen = false;
 
-//SimpleOpenNI  context;
 color[]       userClr = new color[]{ color(255,0,0),
                                      color(0,255,0),
                                      color(0,0,255),
@@ -26,12 +14,7 @@ color[]       userClr = new color[]{ color(255,0,0),
 PVector com = new PVector();
 PVector com2d = new PVector();
 
-//audio
-//Minim minim;
-//FFT fft;
-//AudioPlayer song;
-//AudioInput song;
-//BeatDetect beat;
+AudioManager audioManager;
 
 //background image
 PImage img;
@@ -72,6 +55,9 @@ float thetaBetween = 0;
 float screenBallRatio = 1;
 
 void setup(){
+  frameRate(30);
+  audioManager = new AudioManager();
+  audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);
   //fullScreen(P2D);
 
@@ -89,35 +75,7 @@ void setup(){
   imageWidth = img.width;
   imageHeight = img.height;
 
-  //minim = new Minim(this);
-  //song = minim.loadFile("song.mp3");
-  //song = minim.getLineIn();
-  //beat = new BeatDetect();
-  //beat.detectMode(BeatDetect.FREQ_ENERGY);
-
-
-  //song.play();
-  //fft = new FFT(song.bufferSize(), song.sampleRate());
-  //println(fft.specSize());
-
   lastTimeStamp=millis();
-
-/*
-
-  //kinect settings
-  context = new SimpleOpenNI(this);
-  if(context.isInit() == false)
-  {
-     println("Can't init SimpleOpenNI, maybe the camera is not connected!");
-     exit();
-     return;
-  }
-    // enable depthMap generation
-  context.enableDepth();
-
-  // enable skeleton generation for all joints
-  context.enableUser();
-*/
 
   changeMode(currentMode);
 }
@@ -167,10 +125,16 @@ void processBeat() {
 }
 
 void draw(){
+  rect(0, 0, 222, 222);
+  float level = audioManager.getLevel();
+  if (showDebugInfoOnScreen) {
+    drawFPS();
+  }
   //processBeat();
   fill(0, 0.07);
   rect(0,0,width, height);
 
+  //background(0, 0);
 
   if (currentMode == 7 ) {
     drawRevRings();
@@ -182,11 +146,11 @@ void draw(){
     }
     drawDisco();
   } else if (currentMode == 10) {
-    drawZap();
+    drawZap(level);
   } else if (currentMode == 11) {
-    drawRossette();
+    drawRossette(level);
   }else if (currentMode == 12) {
-    drawCrack();
+    drawCrack(level);
   } else if (currentMode == 13) {
     drawSpark();
   } else if (currentMode == 14) {
@@ -203,17 +167,14 @@ void draw(){
     setColor(c1, c2, rings);
   }
   for(int i = 0; i<noRings; i++){
-   float level = 0;
-    for(int j = 0; j<bandsPerRing; j++){
-      level+=fft.getBand(i*bandsPerRing+j);
-    }
-
     if(useBeat){
       mod = onAnyBeat?5:1;
     }else{
       mod = 10*(log(level)-2);
     }
     mod=mod<0?0:mod*ringSizeModifier;
+
+    mod = 1 + level;
     rings[i].modifyOuterR(mod);
     rings[i].modifyInnerR(mod);
     rings[i].update();
@@ -229,108 +190,10 @@ void draw(){
   }
 
 
-  if(showDebugInfoOnScreen) {
+  if(false) {
     drawKinect();
   }
 }
-
-void drawKinect() {
-  context.update();
-
-  // draw depthImageMap
-  image(context.depthImage(),0, 0, 80, 60);
-  //image(context.userImage(),0,0);
-
-  // draw the skeleton if it's available
-  int[] userList = context.getUsers();
-  for(int i=0;i<userList.length;i++)
-  {
-    if(context.isTrackingSkeleton(userList[i]))
-    {
-      stroke(userClr[ (userList[i] - 1) % userClr.length ] );
-      drawSkeleton(userList[i]);
-    }
-
-  }
-}
-
-// draw the skeleton with the selected joints
-void drawSkeleton(int userId)
-{
-
-
-  PVector posLeftShoulder = new PVector();
-  context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_LEFT_SHOULDER,posLeftShoulder);
-  //context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_LEFT_ELBOW,jointPos);
-  PVector posLeftHand = new PVector();
-  context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_LEFT_HAND,posLeftHand);
-  PVector posRightShoulder = new PVector();
-  context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_RIGHT_SHOULDER,posRightShoulder);
-  //context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_RIGHT_ELBOW,jointPos);
-  PVector posRightHand = new PVector();
-  context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_RIGHT_HAND,posRightHand);
-  PVector posTorso = new PVector();
-  context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_TORSO,posTorso);
-
-  updateHandPosition(posLeftHand, posRightHand, posLeftShoulder, posRightShoulder, posTorso);
-
-
-  if (showDebugInfoOnScreen) {
-    pushStyle();
-    fill(color(255, 255, 255));
-    text("angle: " + thetaBetween, 0, 60);
-    text("hands put up by: " + lengthLeftHandPutUp, 0, 80);
-    text("hands put up by: " + lengthRightHandPutUp, 0, 100);
-    text("hands swoosh by: " + lengthHandsSwoosh, 0, 120);
-    text("jumped by: " + lengthTorsoJump, 0, 140);
-    popStyle();
-  }
-  //float theta = acos((ax*bx + ay*by) / sqrt((ax*ax + ay*ay)*(bx*bx+by*by)));
-  //println(theta);
-
-  //context.drawLimb(userId, SimpleOpenNI.SKEL_HEAD, SimpleOpenNI.SKEL_NECK);
-/*
-  context.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_LEFT_SHOULDER);
-  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_LEFT_ELBOW);
-  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_ELBOW, SimpleOpenNI.SKEL_LEFT_HAND);
-
-  context.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_RIGHT_SHOULDER);
-  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_RIGHT_ELBOW);
-  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_ELBOW, SimpleOpenNI.SKEL_RIGHT_HAND);
-
-  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
-  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
-*/
- // context.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_LEFT_HIP);
- // context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_HIP, SimpleOpenNI.SKEL_LEFT_KNEE);
- // context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_KNEE, SimpleOpenNI.SKEL_LEFT_FOOT);
-
- // context.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_RIGHT_HIP);
- // context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_HIP, SimpleOpenNI.SKEL_RIGHT_KNEE);
- // context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_KNEE, SimpleOpenNI.SKEL_RIGHT_FOOT);
-}
-
-// -----------------------------------------------------------------
-// SimpleOpenNI events
-
-void onNewUser(SimpleOpenNI curContext, int userId)
-{
-  println("onNewUser - userId: " + userId);
-  println("\tstart tracking skeleton");
-
-  curContext.startTrackingSkeleton(userId);
-}
-
-void onLostUser(SimpleOpenNI curContext, int userId)
-{
-  println("onLostUser - userId: " + userId);
-}
-
-void onVisibleUser(SimpleOpenNI curContext, int userId)
-{
-  //println("onVisibleUser - userId: " + userId);
-}
-
 
 void drawARing(Ring ring){
   noStroke();
@@ -393,113 +256,6 @@ void drawFPS(){
   lastTimeStamp = time;
 }
 
-
-int lengthLeftHandPutUp = 0;
-int lengthRightHandPutUp = 0;
-float lastLeftHandAngle = 0;
-float lastRightHandAngle = 0;
-int lengthHandsSwoosh = 0;
-float lastTorsoY = 0;
-float lastTorsoX = 0;
-int lengthTorsoMove = 0;
-int lengthTorsoJump = 0;
-void updateHandPosition(PVector leftHand, PVector rightHand, PVector leftShoulder, PVector rightShoulder, PVector torso) {
-  if (leftHand.y > leftShoulder.y -30 ) {
-    lengthLeftHandPutUp += 1;
-  } else {
-    lengthLeftHandPutUp = 0;
-  }
-  if (rightHand.y > rightShoulder.y - 30) {
-    lengthRightHandPutUp += 1;
-  }else {
-    lengthRightHandPutUp = 0;
-  }
-
-
-  if (abs(lastTorsoY - torso.y) > 5) {
-    lengthTorsoJump += 1;
-
-    ringSizeModifier  = 0.05 * (1+lengthTorsoJump / 20);
-    particleSpeed = min(width, height) / 1000 * (1+lengthTorsoJump / 20);
-    particleRadius = 160 + 10 * (lengthTorsoJump / 10);;
-    for(int i = 0; i<particleNum; i++){
-      particles[i].setSpeed(particleSpeed);
-    }
-
-  } else {
-    lengthTorsoJump -= 1;
-    if (lengthTorsoJump < 0) {
-      lengthTorsoJump = 0;
-    }
-  }
-
-  if (abs(lastTorsoX - torso.x) > 10) {
-    lengthTorsoMove += 1;
-  } else {
-    lengthTorsoMove = 0;
-  }
-
-  lastTorsoX = torso.x;
-  lastTorsoY = torso.y;
-
-  float ax = (torso.x - leftHand.x);
-  float ay = (torso.y - leftHand.y);
-  float bx = (torso.x - rightHand.x);
-  float by = (torso.y - rightHand.y);
-  float thetaLeft = atan2(ay, ax);
-  thetaLeft += PI/2;
-  if (thetaLeft < 0) {
-    thetaLeft += 2*PI;
-  }
-  float thetaRight = atan2(by, bx);
-  thetaRight += PI/2;
-  if (thetaRight < 0) {
-    thetaRight += 2*PI;
-  }
-
-  if (abs(thetaLeft-lastLeftHandAngle) > 0.1 || abs(thetaRight - lastRightHandAngle) > 0.1) {
-    lengthHandsSwoosh += 1;
-  } else {
-    lengthHandsSwoosh = 0;
-  }
-
-  lastLeftHandAngle = thetaLeft;
-  lastRightHandAngle = thetaRight;
-
-  thetaBetween = thetaRight - thetaLeft;
-  if (thetaBetween < 0) {
-    thetaBetween += 2*PI;
-  }
-  thetaBetween *= 360/2/PI;
-
-  if (lengthHandsSwoosh >= 10) {
-    //if (currentMode == 2) {
-        changeMode(12);
-    //}
-  } else if (lengthLeftHandPutUp >= 10) {
-    //if (currentMode == 1) {
-      changeMode(3);
-      lengthLeftHandPutUp = 0;
-    //}
-  }
-  else if (lengthRightHandPutUp >= 10) {
-      changeMode(10);
-      lengthRightHandPutUp = 0;
-  }else if (lengthTorsoJump > 20 /*&& currentMode == 3*/) {
-    changeMode(11);
-  }else if (lengthTorsoMove > 10) {
-    changeMode(4);
-  } else {
-    return;
-  }
-
-  lengthHandsSwoosh = 0;
-  lengthLeftHandPutUp = 0;
-  lengthRightHandPutUp =0;
-  lengthTorsoJump = 0;
-  lengthTorsoMove = 0;
-}
-
 void keyPressed(){
   if (key == 32) {
     javascript.fullScreen();
@@ -511,7 +267,7 @@ void keyPressed(){
     changeMode(11);
   }else if(key==52){
     changeMode(12);
-  }else if(key==53){
+  }else if(key==int("5")){
     changeMode(4);
   }else if(key==int("6")){
     changeMode(2);
@@ -536,7 +292,6 @@ void keyPressed(){
   }else if(key=='s'){
     smallerPulse(1);
   }else if(key=='z'){
-
     particleRadius = 160;
     for(int i = 0; i<particleNum; i++){
       particles[i].setSpeed(0.3);
@@ -544,6 +299,8 @@ void keyPressed(){
     }
   }else if (key == 'a') {
     changeMode(5);
+  }else if(key==112) {
+    showDebugInfoOnScreen = !showDebugInfoOnScreen;
   }
 }
 
@@ -595,8 +352,8 @@ void initZap() {
   zap.init(this);
 }
 
-void drawZap() {
-  zap.draw();
+void drawZap(float level) {
+  zap.draw(level);
 }
 
 Rossette rossette;
@@ -605,8 +362,8 @@ void initRossette() {
   rossette.init(this);
 }
 
-void drawRossette() {
-  rossette.draw();
+void drawRossette(float level) {
+  rossette.draw(level);
 }
 
 Crack crack;
@@ -615,8 +372,8 @@ void initCrack() {
   crack.init(this);
 }
 
-void drawCrack() {
-  crack.draw();
+void drawCrack(float level) {
+  crack.draw(level);
 }
 
 Spark spark;
@@ -650,10 +407,9 @@ void drawRevRings() {
 }
 
 void changeMode(int newMode) {
+  fill(1, 1);
+  tint(1, 1);
 
-
-  fill(0, 1);
-  rect(0,0,width, height);
   currentMode = newMode;
   if(newMode==1){
     drawParticles = false;
@@ -782,10 +538,11 @@ void clearObjects() {
 
 interface JavaScript {
   void fullScreen();
+  float getMeter();
 }
 
 void bindJavaScript(JavaScript js) {
   javascript = js;
 }
 
-JavaScript javascript;
+public JavaScript javascript;
