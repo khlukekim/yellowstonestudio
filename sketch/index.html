@@ -1,7 +1,8 @@
 <!DOCTYPE html>
- <html>
+<html>
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+  <script type='text/javascript' language='javascript' src='AudioManager.js'/>
   <script src="volume-meter.js"></script>
   <script type="text/javascript">
     var bound = false;
@@ -14,7 +15,9 @@
     }
 
     function bindJavascript() {
+      console.log("bindJavascript");
       var pjs = Processing.getInstanceById("sketch");
+      console.log("pjs: " + pjs);
       if (pjs != null && pjs.bindJavaScript) {
         pjs.bindJavaScript(this);
         document.getElementById("sketch").focus();
@@ -61,30 +64,6 @@
 
     var context = new AudioContext();
     var meter = null;
-    var analyser;
-    function accessMic() {
-      navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(function(stream) {
-          var mic = context.createMediaStreamSource(stream);
-          var filter = context.createBiquadFilter();
-          filter.type = 'lowpass';
-          mic.connect(filter);
-          analyser = context.createAnalyser();
-          mic.connect(analyser);
-        }).catch(function(err) {
-          console.log(err);
-          alert("It looks like your browser doesn't support Microphone Input. Please use Chrome browser.");
-        });
-    }
-
-    function getMeter() {
-      var dataArray = new Uint8Array(analyser.fftSize);
-      analyser.getByteTimeDomainData(dataArray);
-      var ssum = dataArray.reduce(function(pv, cv) {
-        return pv + (cv-128) * (cv-128);
-      }, 0);
-      return Math.log(1 + Math.sqrt(ssum / analyser.fftSize)/128);
-    }
-
   </script>
 
   <style type="text/css">
@@ -111,11 +90,11 @@
   <div id='container' class='container'>
   <img class='bg' src="single_cover_website2.jpg">
   <canvas id="sketch" class="sketch" data-processing-sources="
-  sketch.pde
-  AudioManager.pde
-  Sun.pde
-  AnimationBase.pde
-  AnimationInterface.pde"></canvas>
+    sketch.pde
+    Sun.pde
+    AnimationBase.pde
+    AnimationInterface.pde
+    SimpleFreqAnalyzer.pde"></canvas>
   </div>
 </body>
 </html>

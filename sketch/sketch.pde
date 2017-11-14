@@ -1,31 +1,36 @@
 
-
 /* @pjs preload="single_cover_website2.jpg" */
 float lastTimeStamp = 0;
 boolean showDebugInfoOnScreen = false;
 
-AudioManager audioManager;
 AnimationBase currentAnimation;
 
+int[] dataArray;
+
+final char SUN_MODE = '0';
+final char SIMPLE_FREQ_MODE = '1';
+char currentMode = SUN_MODE;
+
+final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE};
 
 void setup(){
   frameRate(30);
-  audioManager = new AudioManager();
-  audioManager.init(false, false, false, this);
+  // audioManager = new AudioManager();
+  // audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);
 
-  currentAnimation = new Sun();
+  setNewMode();
   background(0, 0);//transparent background
-  colorMode(HSB, 1);
 }
 
 void draw(){
-  float level = audioManager.getLevel();
+  // float level = audioManager.getLevel();
+  dataArray = getDataArray();
+  currentAnimation.display();
+
   if (showDebugInfoOnScreen) {
     drawFPS();
   }
-  audioManager.getLevel();
-  currentAnimation.display();
 }
 
 void drawFPS(){
@@ -43,11 +48,26 @@ void drawFPS(){
 
 void keyPressed(){
   if (key == 32) {
-    javascript.fullScreen();   
   }else if(key=='f'){
     javascript.fullScreen(); 
   }else if(key=='d') {
     showDebugInfoOnScreen = !showDebugInfoOnScreen;
+  }
+
+  if (key in modes && key != currentMode){
+    currentMode = key;
+    setNewMode();
+  }
+}
+
+void setNewMode(){
+  background(0);//clean previous animation
+  background(0, 0);//show background image
+  console.log("set new mode: " + currentMode);
+  if(currentMode == SUN_MODE) {
+    currentAnimation = new Sun();
+  }else if(currentMode == SIMPLE_FREQ_MODE){
+    currentAnimation = new SimpleFreqAnalyzer();
   }
 }
 

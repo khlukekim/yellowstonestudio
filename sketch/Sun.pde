@@ -7,6 +7,7 @@ class Sun extends AnimationBase {
 
   public Sun() {
     console.log("new Sun");
+    colorMode(HSB, 1);
   }
 
   public void display() {
