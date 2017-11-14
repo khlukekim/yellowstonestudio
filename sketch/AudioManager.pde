@@ -7,11 +7,11 @@ class AudioManager {
   }
 
   public void getLevel(int bandFrom, int bandTo) {
+    var level = 0;
     if (javascript) {
-      return javascript.getMeter()*10;
-    } else {
-      return 0;
+      level = javascript.getMeter()*10;
     }
+    return level;
   }
 
   public void getSpecSize() {

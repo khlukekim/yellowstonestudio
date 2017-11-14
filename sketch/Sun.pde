@@ -1,5 +1,4 @@
-class Sun {
-
+class Sun extends AnimationBase {
   float radius = 150;
   int nb = 1000;
   color orange = color(255, 105, 0);//orange: color(255, 165, 0);
@@ -10,12 +9,11 @@ class Sun {
     console.log("new Sun");
   }
 
-  public void draw() {
+  public void display() {
     if(firstDisplay){
       fill(orange);
       noStroke();
       ellipse(width/2, height/2, 2*(radius+1), 2*(radius+1));
-      ellipse(10, 10, 20, 20);
       firstDisplay = false;
     }
     strokeWeight(2);
