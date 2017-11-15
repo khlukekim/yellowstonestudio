@@ -3,31 +3,43 @@
 float lastTimeStamp = 0;
 boolean showDebugInfoOnScreen = false;
 
-AnimationBase currentAnimation;
+AnimationManager animMgr;
 
-int[] dataArray;
 
 final char SUN_MODE = '0';
 final char SIMPLE_FREQ_MODE = '1';
-char currentMode = SUN_MODE;
-
 final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE};
+
+char currentMode = SUN_MODE;
+char changeToMode = null;//used to synchronise the keyboard input with the display() call
+
+int[] dataArray;
 
 void setup(){
   frameRate(30);
   // audioManager = new AudioManager();
   // audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);
+  noStroke();
 
-  setNewMode();
-  background(0, 0);//transparent background
+  animMgr = new AnimationManager();
+
+  animMgr.setNewMode(true);
+  // background(0, 0);//transparent background
 }
 
 void draw(){
   // float level = audioManager.getLevel();
   dataArray = getDataArray();
-  currentAnimation.display();
 
+  if(changeToMode){
+    currentMode = changeToMode;
+    animMgr.setNewMode(false);
+    changeToMode = null;
+  }
+
+  animMgr.display();
+  
   if (showDebugInfoOnScreen) {
     drawFPS();
   }
@@ -55,19 +67,7 @@ void keyPressed(){
   }
 
   if (key in modes && key != currentMode){
-    currentMode = key;
-    setNewMode();
-  }
-}
-
-void setNewMode(){
-  background(0);//clean previous animation
-  background(0, 0);//show background image
-  console.log("set new mode: " + currentMode);
-  if(currentMode == SUN_MODE) {
-    currentAnimation = new Sun();
-  }else if(currentMode == SIMPLE_FREQ_MODE){
-    currentAnimation = new SimpleFreqAnalyzer();
+    changeToMode = key;
   }
 }
 

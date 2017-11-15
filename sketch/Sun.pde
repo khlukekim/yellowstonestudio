@@ -3,22 +3,28 @@ class Sun extends AnimationBase {
   int nb = 1000;
   color orange = color(255, 105, 0);//orange: color(255, 165, 0);
   color white = color(255, 255, 255);
-  boolean firstDisplay = true;
+  PGraphics pg;
 
   public Sun() {
-    console.log("new Sun");
-    colorMode(HSB, 1);
+    name = "Sun";
+    firstDisplay = true;
+  }
+
+  private void init(){
+    pg = createGraphics(width, height);
+    pg.translate(width/2, height/2);
+    pg.strokeWeight(2);
+    // pg.fill(orange);
+    // pg.noStroke();
+    // pg.ellipse(0, 0, 2*(radius+1), 2*(radius+1));
+    firstDisplay = false;
   }
 
   public void display() {
+    // console.log("Sun display");
     if(firstDisplay){
-      fill(orange);
-      noStroke();
-      ellipse(width/2, height/2, 2*(radius+1), 2*(radius+1));
-      firstDisplay = false;
+      init();
     }
-    strokeWeight(2);
-    translate(width/2, height/2);
     float theta, rad, x, y, d, lerpCoeff;
     for (int i = 0; i < nb; i ++) {
       theta = random(TWO_PI);
@@ -28,11 +34,14 @@ class Sun extends AnimationBase {
       y = rad * sin(theta);
 
       d = dist(x, y, radius, radius);
-      lerpCoeff = constrain(.9 * d / (2*radius) + random(-.2, .2), -10, 10);
-      stroke(lerpColor(white, orange, lerpCoeff));
+      lerpCoeff = constrain(d / (2*radius*sqrt(2)) + random(-.1, .15), 0, 1);
+      // console.log("lerpCoeff: " + lerpCoeff)
+      pg.stroke(lerpColor(white, orange, lerpCoeff));
       
-      point(x, y);
+      pg.point(x, y);
+
     }
+    image(pg, 0, 0);
   }
 }
 

@@ -1,4 +1,6 @@
 class SimpleFreqAnalyzer extends AnimationBase{
+  PGraphics pg;
+
   // zones of the spectrum that are going to be used
   float specLow = 0.03; // 3% for the bass
   float specMid = 0.125;  // 12.5% for the middle
@@ -19,12 +21,23 @@ class SimpleFreqAnalyzer extends AnimationBase{
   int nbBands;
 
   public SimpleFreqAnalyzer() {
-    console.log("new SimpleFreqAnalyzer");
-    colorMode(RGB, 255);
+    name = "Simple Frequence Analyser";
+    firstDisplay = true;
+  }
+
+  private void init(){
+    pg = createGraphics(width, height);
+    pg.colorMode(RGB, 255);
+    firstDisplay = false;
   }
 
   public void display(){
-    background(0);
+    // console.log("SFA display);
+    if(firstDisplay){
+      init();
+    }
+    
+    pg.background(0);
 
     oldScoreLow = scoreLow;
     oldScoreMid = scoreMid;
@@ -66,11 +79,12 @@ class SimpleFreqAnalyzer extends AnimationBase{
       int bandValue, w = max(1, int(width / nbBands));
       for(int i = 0; i < nbBands; i++){
         bandValue = dataArray[i];
-        fill(255, 120 + bandValue);
-        stroke(255, 180 + bandValue);
-        rect(i*w, height/2-bandValue, w, bandValue);
+        pg.fill(255, 20 + bandValue);
+        pg.stroke(255, 80 + bandValue);
+        pg.rect(i*w, height/2-bandValue, w, bandValue);
       }
     }
+    image(pg, 0, 0);
   }
 }
 

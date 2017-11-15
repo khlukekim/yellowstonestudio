@@ -10,7 +10,7 @@
 	      filter.type = 'lowpass';
 	      mic.connect(filter);
 	      analyser = context.createAnalyser();
-	      analyser.fftSize = 2048;//set analyser.fftSize = 2048;??
+	      // default analyser.fftSize is 2048
 	      mic.connect(analyser);
 	    }).catch(function(err) {
 	      console.log(err);
@@ -21,14 +21,14 @@
   function getDataArray() {
       var tmpDataArray = null;
       if(analyser){
-        tmpDataArray = new Uint8Array(analyser.fftSize);
+        tmpDataArray = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(tmpDataArray);
       }
       return tmpDataArray;
   }
 
    function getMeter() {
-      var tmpDataArray = new Uint8Array(analyser.fftSize);
+      var tmpDataArray = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteTimeDomainData(tmpDataArray);
 
       var bufferLength = analyser.frequencyBinCount;

@@ -1,5 +1,8 @@
 class AnimationBase implements AnimationInterface {
-  void init();
-  void update();
-  void display();
+  String name = "Animation Base";
+  boolean firstDisplay;
+
+  private void init(){}
+  public void update(){}
+  public void display(){}
 }
