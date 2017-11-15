@@ -13,7 +13,10 @@ final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE};
 char currentMode = SUN_MODE;
 char changeToMode = null;//used to synchronise the keyboard input with the display() call
 
+// frequencies data array
 int[] dataArray;
+// main volume
+float volume;
 
 void setup(){
   frameRate(30);
@@ -31,6 +34,7 @@ void setup(){
 void draw(){
   // float level = audioManager.getLevel();
   dataArray = getDataArray();
+  volume = getMeter();
 
   if(changeToMode){
     currentMode = changeToMode;

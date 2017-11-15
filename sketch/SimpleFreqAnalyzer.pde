@@ -20,6 +20,9 @@ class SimpleFreqAnalyzer extends AnimationBase{
   // number of frequencies that are monitored
   int nbBands;
 
+  // smoothed volume
+  float volumeFx;
+
   public SimpleFreqAnalyzer() {
     name = "Simple Frequence Analyser";
     firstDisplay = true;
@@ -84,6 +87,12 @@ class SimpleFreqAnalyzer extends AnimationBase{
         pg.rect(i*w, height/2-bandValue, w, bandValue);
       }
     }
+
+    float volumeCoeff = volumeFx < volume ? .2 : .05;
+    volumeFx += (volume - volumeFx) * volumeCoeff;
+
+    pg.fill(255, map(volumeFx, 0, .3, 0, 120), 120);
+    pg.rect(0, height/2, map(volumeFx, 0, .3, 0, width), 90);
     image(pg, 0, 0);
   }
 }
