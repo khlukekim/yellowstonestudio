@@ -81,7 +81,7 @@ class SimpleFreqAnalyzer extends AnimationBase{
       // display the animation, going through each and every available frequency
       int bandValue, w = max(1, int(width / nbBands));
       for(int i = 0; i < nbBands; i++){
-        bandValue = dataArray[i];
+        bandValue = dataArray[i] * volumeFx * 4;
         pg.fill(255, 20 + bandValue);
         pg.stroke(255, 80 + bandValue);
         pg.rect(i*w, height/2-bandValue, w, bandValue);
@@ -90,9 +90,8 @@ class SimpleFreqAnalyzer extends AnimationBase{
 
     float volumeCoeff = volumeFx < volume ? .2 : .05;
     volumeFx += (volume - volumeFx) * volumeCoeff;
-
     pg.fill(255, map(volumeFx, 0, .3, 0, 120), 120);
-    pg.rect(0, height/2, map(volumeFx, 0, .3, 0, width), 90);
+    pg.rect(0, height/2, map(volumeFx, 0, 1, 0, width), 90);
     image(pg, 0, 0);
   }
 }

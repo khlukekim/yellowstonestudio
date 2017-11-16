@@ -13,6 +13,7 @@ final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE};
 char currentMode = SUN_MODE;
 char changeToMode = null;//used to synchronise the keyboard input with the display() call
 
+
 // frequencies data array
 int[] dataArray;
 // main volume
@@ -33,7 +34,7 @@ void setup(){
 
 void draw(){
   // float level = audioManager.getLevel();
-  dataArray = getDataArray();
+  dataArray = getFreqArray();
   volume = getMeter();
 
   if(changeToMode){
@@ -41,7 +42,7 @@ void draw(){
     animMgr.setNewMode(false);
     changeToMode = null;
   }
-
+  
   animMgr.display();
   
   if (showDebugInfoOnScreen) {
@@ -68,6 +69,8 @@ void keyPressed(){
     javascript.fullScreen(); 
   }else if(key=='d') {
     showDebugInfoOnScreen = !showDebugInfoOnScreen;
+  }else if(key=='m') {
+    toggleMic();
   }
 
   if (key in modes && key != currentMode){
