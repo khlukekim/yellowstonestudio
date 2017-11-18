@@ -1,5 +1,5 @@
 
-  var micOn = false;
+  var micOn = true;
 
   var contextMic;
   var contextAudioFile;

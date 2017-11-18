@@ -47,8 +47,8 @@ class Sun extends AnimationBase {
       theta = random(TWO_PI);
       rad = sqrt(random(radius*radius));
 
-      x = rad * cos(theta);
-      y = rad * sin(theta);
+      x = int(rad * cos(theta));
+      y = int(rad * sin(theta));
 
       d = dist(x, y, radius, radius);
       lerpCoeff = constrain(d / (2*radius*sqrt(2)) + random(-.1, .15), 0, 1);
@@ -66,7 +66,7 @@ class Sun extends AnimationBase {
       && particles.size() < 300
       && volume > birthCoeff * prevVolume){
       float nbNewPart = map(volume / (.001 + birthCoeff * prevVolume), 1, 100, 3, 20);
-      float partAngle = int(random(10)) * TWO_PI / 10;
+      float partAngle = int(random(5)) * TWO_PI / 5;
       for(int i = 0; i < nbNewPart; i ++){
         particles.add(new Particle(radius, partAngle, partsPg));
       }

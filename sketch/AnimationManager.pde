@@ -9,9 +9,7 @@ class AnimationManager {
 	float animationAlpha = 0;
 	float alphaTarget = 1;
 
-	public AnimationManager() {
-		currentAnimation = new Sun();
-	}
+	public AnimationManager() {}
 
 	public void display() {
 		colorMode(RGB, 255);
@@ -43,6 +41,11 @@ class AnimationManager {
 	    nextAnimation = new Sun();
 	  }else if(currentMode == SIMPLE_FREQ_MODE){
 	    nextAnimation = new SimpleFreqAnalyzer();
+	  }else if(currentMode == RENAME_ME_MODE){
+	    nextAnimation = new RenameMe();
+	  }
+	  if(fromBlack){
+	  	currentAnimation = nextAnimation;
 	  }
 	}
 

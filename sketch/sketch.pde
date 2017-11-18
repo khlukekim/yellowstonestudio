@@ -8,7 +8,8 @@ AnimationManager animMgr;
 
 final char SUN_MODE = '0';
 final char SIMPLE_FREQ_MODE = '1';
-final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE};
+final char RENAME_ME_MODE = '2';
+final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE, RENAME_ME_MODE};
 
 char currentMode = SUN_MODE;
 char changeToMode = null;//used to synchronise the keyboard input with the display() call
