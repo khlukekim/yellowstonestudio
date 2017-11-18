@@ -18,6 +18,7 @@ char changeToMode = null;//used to synchronise the keyboard input with the displ
 int[] dataArray;
 // main volume
 float volume;
+float prevVolume;
 
 void setup(){
   frameRate(30);
@@ -35,6 +36,7 @@ void setup(){
 void draw(){
   // float level = audioManager.getLevel();
   dataArray = getFreqArray();
+  prevVolume = volume;
   volume = getMeter();
 
   if(changeToMode){
@@ -42,7 +44,7 @@ void draw(){
     animMgr.setNewMode(false);
     changeToMode = null;
   }
-  
+
   animMgr.display();
   
   if (showDebugInfoOnScreen) {

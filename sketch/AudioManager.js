@@ -76,7 +76,9 @@
 
   function setupAudioNodes() {
     console.log("setupAudioNodes")
-    contextAudioFile = new AudioContext();
+    if(!contextAudioFile){
+      contextAudioFile = new AudioContext();
+    }
     // setup a javascript node
     javascriptNode = contextAudioFile.createScriptProcessor(2048, 1, 1);
     // connect to destination, else it isn't called
