@@ -43,6 +43,8 @@ class AnimationManager {
 	    nextAnimation = new SimpleFreqAnalyzer();
 	  }else if(currentMode == RENAME_ME_MODE){
 	    nextAnimation = new RenameMe();
+	  }else if(currentMode == HAIRY_MODE){
+	    nextAnimation = new Hairy();
 	  }
 	  if(fromBlack){
 	  	currentAnimation = nextAnimation;

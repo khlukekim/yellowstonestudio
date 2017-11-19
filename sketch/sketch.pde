@@ -6,12 +6,13 @@ boolean showDebugInfoOnScreen = false;
 AnimationManager animMgr;
 
 
-final char SUN_MODE = '0';
-final char SIMPLE_FREQ_MODE = '1';
+final char SIMPLE_FREQ_MODE = '0';
+final char SUN_MODE = '1';
 final char RENAME_ME_MODE = '2';
-final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE, RENAME_ME_MODE};
+final char HAIRY_MODE = '3';
+final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE, RENAME_ME_MODE, HAIRY_MODE};
 
-char currentMode = SUN_MODE;
+char currentMode = HAIRY_MODE;
 char changeToMode = null;//used to synchronise the keyboard input with the display() call
 
 
@@ -20,6 +21,7 @@ int[] dataArray;
 // main volume
 float volume;
 float prevVolume;
+float volumeFx;
 
 void setup(){
   frameRate(30);
@@ -39,7 +41,9 @@ void draw(){
   dataArray = getFreqArray();
   prevVolume = volume;
   volume = getMeter();
-
+  float volumeCoeff = volumeFx < volume ? .2 : .05;
+  volumeFx += (volume - volumeFx) * volumeCoeff;
+    
   if(changeToMode){
     currentMode = changeToMode;
     animMgr.setNewMode(false);
