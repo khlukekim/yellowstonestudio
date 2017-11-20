@@ -12,6 +12,9 @@
   var sourceNode;
   var javascriptNode;
 
+  var song0 = "data/01_reason_to_sing.mp3"
+  var song1 = "data/real_love_lyric_video_-_youth_revival_-_hillsong_young__free.mp3"
+
   function accessMic() {
   	console.log("accessMic");
     contextMic = new AudioContext();
@@ -34,7 +37,7 @@
   function toggleMic(){
     micOn = !micOn;
     if(!micOn){
-      loadSound("data/01_reason_to_sing.mp3");
+      loadSound(song0);
     }else{
       sourceNode.stop();
     }
@@ -43,7 +46,7 @@
   function accessAudioFile() {
     console.log("accessAudioFile");
     if(!micOn){
-      loadSound("data/01_reason_to_sing.mp3");
+      loadSound(song0);
     }
   }
 

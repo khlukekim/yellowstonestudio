@@ -10,9 +10,16 @@ final char SIMPLE_FREQ_MODE = '0';
 final char SUN_MODE = '1';
 final char RENAME_ME_MODE = '2';
 final char HAIRY_MODE = '3';
-final char[] modes = {SUN_MODE, SIMPLE_FREQ_MODE, RENAME_ME_MODE, HAIRY_MODE};
+final char COLOR_RINGS_MODE = '4';
+final char[] modes = {
+  SUN_MODE, 
+  SIMPLE_FREQ_MODE, 
+  RENAME_ME_MODE, 
+  HAIRY_MODE, 
+  COLOR_RINGS_MODE
+};
 
-char currentMode = HAIRY_MODE;
+char currentMode = COLOR_RINGS_MODE;
 char changeToMode = null;//used to synchronise the keyboard input with the display() call
 
 
@@ -24,7 +31,7 @@ float prevVolume;
 float volumeFx;
 
 void setup(){
-  frameRate(30);
+  // frameRate(30);
   // audioManager = new AudioManager();
   // audioManager.init(false, false, false, this);
   size(screen.width, screen.height, P2D);

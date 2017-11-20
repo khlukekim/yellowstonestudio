@@ -45,6 +45,8 @@ class AnimationManager {
 	    nextAnimation = new RenameMe();
 	  }else if(currentMode == HAIRY_MODE){
 	    nextAnimation = new Hairy();
+	  }else if(currentMode == COLOR_RINGS_MODE){
+	    nextAnimation = new ColorRings();
 	  }
 	  if(fromBlack){
 	  	currentAnimation = nextAnimation;
